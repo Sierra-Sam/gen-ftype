@@ -27,13 +27,13 @@ which are not part of POSIX, but have been around for a
 long time, and are better than using hand-crafted magic
 constants.
 
-To build its decoder table, gen-ftype needs extract the
-file type bit-field from the st_mode field of a stat()
-structure.  That is, it needs to know the bit position of
-the file type bit-field, its size in bits, and the validity
-and meaning of all possible values of the bit-field.
-None of these implementation details are specified by
-POSIX or by GNU libc.
+To build its decoder table, gen-ftype needs to extract
+the file type bit-field from the st_mode field of a
+stat() structure.  That is, it needs to know the bit
+position of the file type bit-field, its size in bits,
+and the validity and meaning of all possible values of
+the bit-field.  None of these implementation details are
+specified by POSIX or by GNU libc.
 
 In practice, such hand-code methods in some more high-level
 language, such as Perl, Python, or Ruby, will likely work.
