@@ -1,0 +1,7 @@
+
+sub mode_to_ftype { substr("?pc?d?b?f?l?sDE?", ($_[0] & 0xf000) >> 12, 1); }
+
+for my $fname (@ARGV) {
+    my $mode = (stat($fname))[2];
+    printf "%s %s\n", mode_to_ftype($mode), $fname;
+}
