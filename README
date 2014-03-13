@@ -1,29 +1,55 @@
 
-gen-ftype generates a fragment of C code that translates the
-mode of a file to a single-letter mnemonic that is the
-same as that printed in the first column of the command:
+gen-ftype generates a decoder table suitable for
+translating the mode (statb.st_mode) of a file into a
+single-letter file type.
 
-  ls -l
+By default, the table maps a st_mode to a single-letter
+mnemonic file type that is the same as that printed in
+the first column of the output of the ls -l command.
+
+By default, gen-ftype produces a fragment of C code,
+consisting of the table and the definition of a function,
+mode_to_ftype(), that does the translation.  There is also
+some support for other languages, like perl.
 
 This messy bit of low-level code is necessary if you want
 to do the translation efficiently and still be portable.
 
 Any hand-coded table or hand-coded decoding function
-written in any language other than C is not guaranteed to
-work, because POSIX says what you can count on, solely
-in terms of C code, and even C preprocessor macros.
-The position, size and values of the subfield of
-st_mode containing filetype codes are all not specified.
-Only certain macros are claimed to conform to the standard.
+written in any language other than C is not guaranteed
+to work, because the descriptions of what you can count
+on and what you cannot are either the POSIX standard or
+the documentation for GNU libc.  Both of them describe
+everything in terms of C preprocessor macros.  So, it is
+not only dependent of the C programming language, but on
+the C preprocessor.  gen-ftype uses macros for bit masks,
+which are not part of POSIX, but have been around for a
+long time, and are better than using hand-crafted magic
+constants.
+
+To build its decoder table, gen-ftype needs extract the
+file type bit-field from the st_mode field of a stat()
+structure.  That is, it needs to know the bit position of
+the file type bit-field, its size in bits, and the validity
+and meaning of all possible values of the bit-field.
+None of these implementation details are specified by
+POSIX or by GNU libc.
 
 In practice, such hand-code methods in some more high-level
 language, such as Perl, Python, or Ruby, will likely work.
 There is not much variation in these implementation
-details.
+details, especially for the "core" file types: file,
+directory, etc.  So, a file type decoder could just deal
+with a subset of all possible values and return '?' for
+everything not in the least-common-denominator subset.
+Another approach might be to use a hand-code table with
+the union of the decode tables for all the common POSIXy
+systems.  But, there is danger of conflicts for some of
+the more exotic file types.
 
-But, it is still awkward to directly write a translator
-for st_mode -> ls-filetype, without using C preprocessor
-macros.
+Even if the issues with standards were solved, it is still
+awkward to directly write a translator for st_mode ->
+ls-filetype, without using C preprocessor macros.
 
 Question:
   Why not just lift the code from the ls command?
