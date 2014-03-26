@@ -25,20 +25,25 @@ But, it is still awkward to directly write a translator
 for `st_mode` -> ls-filetype, without using C preprocessor
 macros.
 
-### **Question:**
+##### **Question:**
 
 Why not just lift the code from the ls command?
-GNU ls is free software.  
+GNU ls is free software.
 
-### **Answer:**
+##### **Answer:**
 
 `ls` is a complicated command.  Both GNU `ls` and
 Solaris `ls` are big, complicated, and monolithic.
 Teasing out a simple translation table from that
 code is not all that practical.  It was not designed
 to be a general-purpose, reusable library of small
-functions.  There is no libls.  Not that I know of.
+functions.  There is no `libls`.  Not that I know of.
 Not yet, anyway.
+
+The GNU source code shows that they have their own
+`enum` type for classifying file types, and the
+logic for determining file type is more complicated,
+and it does not include Doors or Event Ports.
 
 
 ## Existing code in Perl
@@ -68,10 +73,10 @@ generated table, and comparing them to the hand-coded table.
 
 Source of ftype table | Values
 -----------------------|-------------------
-Generated tables:
-  Solaris:              q[?pc?d?b?-?l?sDE?]
-  Linux:                q[?pc?d?b?-?l?s???]
-File::Stat:Ls           q[.pc?d?b?-?l?s???]
+Generated tables:|
+  Solaris|q[?pc?d?b?-?l?sDE?]
+  Linux|q[?pc?d?b?-?l?s???]
+File::Stat:Ls|q[.pc?d?b?-?l?s???]
 
 ## Other Systems
 
@@ -90,8 +95,8 @@ That is, there is no code that is completely
 automated, and covers all cases.  Some file types
 like Doors and Event Ports are exotic.
 
-I test manually by grovelling through /devices
-directory, /tmp and /var/tmp, and in /proc
+I test manually by grovelling through the `/devices`
+directory, `/tmp` and `/var/tmp`, and in `/proc`
 where some Ds and Ps are likely to be found.
 
 Like so:
@@ -103,9 +108,11 @@ Like so:
     pfexec gls -lh /proc/9/fd/5
     ?--------- 2 root root 0 May 29  2013 /proc/9/fd/5
 
-Note that, on Solaris, the native ls command knows
+Note that, on Solaris, the native `ls` command knows
 its Ds and Ps, but the `gls` (GNU version of `ls`)
-does not.
+does not.  Note also that often you need to have elevated
+privileges just to navigate to some of the Doors
+and Event Ports.
 
 ## Bigger Picture and Related Work
 
@@ -126,8 +133,8 @@ error reporting that can be improved by using the C
 preprocessor to generate decoder tables and/or functions.
 For example, a portable `strerr_symbol()` function
 to decode `errno` values, but to decode to symbols,
-such as `ENOENT`.  It does for symbolic errno values
-what strerror() and does for error message strings.
+such as `ENOENT`.  It does for symbolic `errno` values
+what `strerror()` and does for error message strings.
 The symbolic translations can be generated completely
 automatically, whereas the array of explanatory strings
 cannot.  They are maintained by hand.
@@ -136,4 +143,4 @@ cannot.  They are maintained by hand.
 --
     Guy Shaw
     Novice.Sandbox@yahoo.com
-    2014-03-26
+    2014-Mar-26
