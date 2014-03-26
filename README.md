@@ -71,12 +71,12 @@ if not some decoding functions written in C.
 Here is a table showing the minor variations in the
 generated table, and comparing them to the hand-coded table.
 
-Source of ftype table | Values
------------------------|-------------------
-Generated tables:|
-    Solaris|`q[?pc?d?b?-?l?sDE?]`
-    Linux|`q[?pc?d?b?-?l?s???]`
-File::Stat:Ls|`q[.pc?d?b?-?l?s???]`
+_|Source of ftype table | Values
+-|-----------------------|-------------------
+Generated tables:||
+|Solaris|`q[?pc?d?b?-?l?sDE?]`
+|Linux|`q[?pc?d?b?-?l?s???]`
+File::Stat:Ls||`q[.pc?d?b?-?l?s???]`
 
 ## Other Systems
 
@@ -134,7 +134,7 @@ preprocessor to generate decoder tables and/or functions.
 For example, a portable `strerr_symbol()` function
 to decode `errno` values, but to decode to symbols,
 such as `ENOENT`.  It does for symbolic `errno` values
-what `strerror()` and does for error message strings.
+what `strerror()` does for error message strings.
 The symbolic translations can be generated completely
 automatically, whereas the array of explanatory strings
 cannot.  They are maintained by hand.
