@@ -71,12 +71,11 @@ if not some decoding functions written in C.
 Here is a table showing the minor variations in the
 generated table, and comparing them to the hand-coded table.
 
-_|Source of ftype table | Values
--|-----------------------|-------------------
-Generated tables:||
-|Solaris|`q[?pc?d?b?-?l?sDE?]`
-|Linux|`q[?pc?d?b?-?l?s???]`
-File::Stat:Ls||`q[.pc?d?b?-?l?s???]`
+Source of ftype table | method | Values
+----------------------|--------|----------------
+Solaris|generated|`q[?pc?d?b?-?l?sDE?]`
+Linux|generated|`q[?pc?d?b?-?l?s???]`
+File::Stat:Ls|hand-coded|`q[.pc?d?b?-?l?s???]`
 
 ## Other Systems
 
